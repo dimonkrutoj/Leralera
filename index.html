@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для Леры ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4081;
+            --bg-color: #fff5f8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--bg-color);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            touch-action: manipulation; /* Улучшает поведение на мобильных */
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 64, 129, 0.15);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--primary-color);
+            font-size: 26px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .emoji-container {
+            font-size: 80px;
+            margin-bottom: 20px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Анимация пульсации для эмодзи */
+        .animated-emoji {
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: nowrap;
+            margin-top: 20px;
+            min-height: 120px;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 35px;
+            z-index: 100;
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            padding: 15px 35px;
+            white-space: nowrap;
+        }
+
+        #successMessage {
+            display: none;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating-heart {
+            position: fixed;
+            color: var(--primary-color);
+            pointer-events: none;
+            z-index: 1;
+            animation: fly 3s linear forwards;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <div id="content">
+            <div class="emoji-container" id="emoji">🌹</div>
+            <h1 id="questionText">Пойдешь на свидание зай?</h1>
+            
+            <div class="btn-group">
+                <button id="yesBtn">Да</button>
+                <button id="noBtn">Нет</button>
+            </div>
+        </div>
+
+        <div id="successMessage">
+            <div class="emoji-container">🥰</div>
+            <h1>А я знал что ты у меня самая лучшая девушка на свете!</h1>
+        </div>
+    </div>
+
+    <script>
+        let step = 1;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionText = document.getElementById('questionText');
+        const emoji = document.getElementById('emoji');
+        const content = document.getElementById('content');
+        const successMessage = document.getElementById('successMessage');
+
+        const steps = [
+            { text: "Пойдешь на свидание зай?", emoji: "🌹" },
+            { text: "Ну пожалуйста 🥺", emoji: "🥺" },
+            { text: "Ну я же хороший 🥺🥺🥺", emoji: "😇" },
+            { text: "Ну как же так не полюдски так делать солнце", emoji: "😔" },
+            { text: "Ну ты серьёзно? Ну Лерочка?", emoji: "😤" },
+            { text: "Ну я знал что ты согласишься 🤗", emoji: "🤗" }
+        ];
+
+        function updateStep() {
+            if (step > 6) step = 6;
+            const data = steps[step - 1];
+            questionText.innerText = data.text;
+            emoji.innerText = data.emoji;
+            emoji.classList.add('animated-emoji');
+
+            // Логика изменения размеров
+            if (step === 2) {
+                yesBtn.style.transform = "scale(1.25)";
+                noBtn.style.transform = "scale(0.8)";
+            } else if (step === 3) {
+                yesBtn.style.transform = "scale(1.5)";
+                noBtn.style.transform = "scale(0.6)";
+            } else if (step === 4) {
+                yesBtn.style.transform = "scale(1.8)";
+                noBtn.style.transform = "scale(0.4)";
+            } else if (step === 5) {
+                yesBtn.style.width = "90%";
+                yesBtn.style.transform = "scale(2)";
+                noBtn.style.transform = "scale(0.3)";
+                noBtn.style.opacity = "0.7";
+                
+                // Добавляем "убегание" для ПК и мобильных
+                noBtn.addEventListener('mouseover', moveButton);
+                noBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    moveButton();
+                });
+            } else if (step === 6) {
+                yesBtn.style.width = "100%";
+                yesBtn.style.transform = "scale(2.2)";
+                noBtn.style.display = "none";
+            }
+        }
+
+        function moveButton() {
+            if (step >= 5) {
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = x + 'px';
+                noBtn.style.top = y + 'px';
+                noBtn.style.zIndex = "1000";
+            }
+        }
+
+        function showSuccess() {
+            content.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Запуск сердечек
+            setInterval(createHeart, 200);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        noBtn.addEventListener('click', () => {
+            if (step < 6) {
+                step++;
+                updateStep();
+            }
+        });
+
+        yesBtn.addEventListener('click', showSuccess);
+
+        // Инициализация
+        updateStep();
+    </script>
+</body>
+</html>
+
